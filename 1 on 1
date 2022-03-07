@@ -1,0 +1,169 @@
+if game.CoreGui:FindFirstChild("GlobalCommuncations1on1") then
+	game.CoreGui:FindFirstChild("GlobalCommuncations1on1"):Destroy()
+end
+local GlobalCommuncations1on1 = Instance.new("ScreenGui")
+local MainFrame = Instance.new("Frame")
+local TopPanel = Instance.new("Frame")
+local PasteLink = Instance.new("TextBox")
+local SendRequestButton = Instance.new("TextButton")
+local Close = Instance.new("TextButton")
+local ResultOfPaste = Instance.new("TextLabel")
+local Activated = Instance.new("TextButton")
+local Status = Instance.new("TextLabel")
+
+--Properties:
+
+GlobalCommuncations1on1.Name = "GlobalCommuncations1on1"
+GlobalCommuncations1on1.Parent = game.CoreGui
+GlobalCommuncations1on1.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+MainFrame.Name = "MainFrame"
+MainFrame.Parent = GlobalCommuncations1on1
+MainFrame.BackgroundColor3 = Color3.fromRGB(43, 43, 43)
+MainFrame.BorderSizePixel = 0
+MainFrame.Position = UDim2.new(0.0891677439, 0, 0.145560399, 0)
+MainFrame.Size = UDim2.new(0, 515, 0, 317)
+
+TopPanel.Name = "TopPanel"
+TopPanel.Parent = MainFrame
+TopPanel.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
+TopPanel.BorderSizePixel = 0
+TopPanel.Size = UDim2.new(0, 515, 0, 58)
+
+PasteLink.Name = "PasteLink"
+PasteLink.Parent = TopPanel
+PasteLink.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+PasteLink.BorderSizePixel = 0
+PasteLink.Position = UDim2.new(0.11262136, 0, 0.068965517, 0)
+PasteLink.Size = UDim2.new(0, 401, 0, 50)
+PasteLink.Font = Enum.Font.SourceSans
+PasteLink.PlaceholderText = "Raw Pastebin link:"
+PasteLink.Text = ""
+PasteLink.TextColor3 = Color3.fromRGB(255,255,255)
+PasteLink.TextSize = 14.000
+
+SendRequestButton.Name = "SendRequestButton"
+SendRequestButton.Parent = TopPanel
+SendRequestButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+SendRequestButton.BackgroundTransparency = 1.000
+SendRequestButton.Position = UDim2.new(0.0155339809, 0, 0.068965517, 0)
+SendRequestButton.Size = UDim2.new(0, 43, 0, 50)
+SendRequestButton.Font = Enum.Font.SourceSans
+SendRequestButton.Text = "Go!"
+SendRequestButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+SendRequestButton.TextScaled = true
+SendRequestButton.TextSize = 14.000
+SendRequestButton.TextWrapped = true
+
+Close.Name = "Close"
+Close.Parent = TopPanel
+Close.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Close.BackgroundTransparency = 1.000
+Close.Position = UDim2.new(0.902912676, 0, 0.068965517, 0)
+Close.Size = UDim2.new(0, 44, 0, 50)
+Close.Font = Enum.Font.SourceSans
+Close.Text = "X"
+Close.TextColor3 = Color3.fromRGB(255, 255, 255)
+Close.TextSize = 35.000
+Close.TextWrapped = true
+
+ResultOfPaste.Name = "ResultOfPaste"
+ResultOfPaste.Parent = MainFrame
+ResultOfPaste.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+ResultOfPaste.BorderSizePixel = 0
+ResultOfPaste.Position = UDim2.new(0.0349514559, 0, 0.22712934, 0)
+ResultOfPaste.Size = UDim2.new(0, 484, 0, 232)
+ResultOfPaste.Font = Enum.Font.SourceSans
+ResultOfPaste.Text = "Their message will be here."
+ResultOfPaste.TextColor3 = Color3.fromRGB(255, 255, 255)
+ResultOfPaste.TextSize = 35.000
+ResultOfPaste.TextWrapped = true
+ResultOfPaste.TextXAlignment = Enum.TextXAlignment.Left
+ResultOfPaste.TextYAlignment = Enum.TextYAlignment.Top
+
+Activated.Name = "Activated"
+Activated.Parent = MainFrame
+Activated.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Activated.BackgroundTransparency = 1.000
+Activated.Position = UDim2.new(0.891262174, 0, 0.842271268, 0)
+Activated.Size = UDim2.new(0, 43, 0, 31)
+Activated.Font = Enum.Font.SourceSans
+Activated.Text = "Off"
+Activated.TextColor3 = Color3.fromRGB(255, 255, 255)
+Activated.TextScaled = true
+Activated.TextSize = 14.000
+Activated.TextWrapped = true
+
+Status.Name = "Status"
+Status.Parent = MainFrame
+Status.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Status.BackgroundTransparency = 1.000
+Status.Position = UDim2.new(0.0155339809, 0, 0.182965294, 0)
+Status.Size = UDim2.new(0, 64, 0, 14)
+Status.Font = Enum.Font.SourceSans
+Status.Text = "Waiting."
+Status.TextColor3 = Color3.fromRGB(255, 255, 255)
+Status.TextScaled = true
+Status.TextSize = 14.000
+Status.TextWrapped = true
+Status.TextXAlignment = Enum.TextXAlignment.Left
+wait(1)
+MainFrame.Draggable = true
+MainFrame.Active = true
+local player = game.Players.LocalPlayer
+local PasteLINK 
+local refreshing = false
+local toggleActivated = false
+local HTTP = game:GetService("HttpService")
+local togglevisible = false
+local UIS = game:GetService("UserInputService")
+
+UIS.InputBegan:Connect(function(key,chatting)
+	if not chatting and key.KeyCode == Enum.KeyCode.P then
+		if togglevisible == false then
+			togglevisible = true
+			MainFrame.Visible = false
+		else
+			togglevisible = false
+			MainFrame.Visible = true
+		end
+	end
+end)
+
+
+Activated.MouseButton1Click:Connect(function()
+	if toggleActivated == false then
+		toggleActivated = true
+		refreshing = true
+		Activated.Text = "On"
+		print(refreshing)
+	elseif toggleActivated == true then
+		toggleActivated = false
+		refreshing = false
+		Activated.Text = "Off"
+		print(refreshing)
+	end
+end)
+
+SendRequestButton.MouseButton1Click:Connect(function()
+	PasteLINK = PasteLink.Text
+	print(PasteLINK)
+	spawn(function()
+		Status.Text = "Set!"
+		wait(2)
+		Status.Text = "Waiting."
+	end)
+end)
+
+spawn(function()
+	while true do
+		wait(1)
+		if refreshing == true then
+			ResultOfPaste.Text = game:HttpGet(PasteLINK)
+			print("REFRESHING THING YES")
+		end
+	end
+end)
+Close.MouseButton1Click:Connect(function()
+	game.Debris:AddItem(GlobalCommuncations1on1,0.1)
+end)
